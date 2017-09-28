@@ -13,8 +13,8 @@ class QRCodePrinter():
         # 保存生成二维码的字符串  
         self.platform = self.__getSystemType()
         if "Windows" in self.platform:
-            self.black = "▇"
-            self.white = " "
+            self.white = "▇".decode("utf8")
+            self.black = "　".decode("utf8")
         elif "Linux" in self.platform:
             self.black = "\033[40m  \033[0m"
             self.white = "\033[47m  \033[0m"

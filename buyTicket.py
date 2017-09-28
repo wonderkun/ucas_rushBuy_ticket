@@ -10,6 +10,7 @@ from collections import OrderedDict
 import json
 from urllib import unquote
 from qrCodePrinter import QRCodePrinter
+import platform
 
 debug = False
 
@@ -21,6 +22,8 @@ class BuyTicket():
         self.password = cf.get("logininfo","password")
         print('Hi, username: ' + self.username)
         print('Password: ' + '*' * len(self.password))
+
+        self.platform = platform.platform()
         self.loginPage = 'http://sep.ucas.ac.cn'
         self.loginUrl = self.loginPage + '/slogin'
         self.buyTicketSystem = self.loginPage+"/portal/site/311/1800"
@@ -157,10 +160,14 @@ class BuyTicket():
             while True:
                 for i in self.takeBusDay:
                     print("[{i}]:{takeBusDay}".format(i=i,takeBusDay=self.takeBusDay[i]))
-                strHint = ("hello {},please choose  the sequence number of the time to take the bus (1-4):".format(self.studentName))
+                if "Windows" in self.platform:
+                    strHint = ("hello {},please choose  the sequence number of the time to take the bus (1-4):".format(self.studentName.decode("utf8").encode("gbk")))
+                else:
+                    
+                    strHint = ("hello {},please choose  the sequence number of the time to take the bus (1-4):".format(self.studentName))
                 try:
                     num = int(input(strHint))
-                except ValueError as e :
+                except  ValueError as e:
                     continue
                 if num > 4 or num < 1:
                     print("The num must between 1-4!")
@@ -197,12 +204,19 @@ class BuyTicket():
                 print(self.routeContent)
 
             for i in self.routeContent:
-                print("[{i}]:{routeContent}".format(i=i,routeContent=self.routeContent[i][1]))
+                if "Windows" in self.platform:
+                    print("[{i}]:{routeContent}".format(i=i,routeContent=self.routeContent[i][1].decode("utf8").encode("gbk")))
+                else:
+                    print("[{i}]:{routeContent}".format(i=i,routeContent=self.routeContent[i][1]))
+
             while True:
-                strHint = ("hello {},please choose  the sequence number of the route to take the bus (1-{}):".format(self.studentName,i))
+                if "Windows" in self.platform:
+                    strHint = ("hello {},please choose  the sequence number of the route to take the bus (1-{}):".format(self.studentName.decode("utf8").encode("gbk"),i))
+                else:
+                    strHint = ("hello {},please choose  the sequence number of the route to take the bus (1-{}):".format(self.studentName,i))
                 try:
                     num = int(input(strHint))
-                except ValueError as e:
+                except ValueError as e :
                     continue
                 if num > i or  num < 1:
                     print("The num must between 1-{i}!".format(i=i))
