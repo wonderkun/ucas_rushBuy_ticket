@@ -30,7 +30,7 @@ password = 你的密码
 
 ```bash
 ➜ ucas_rushBuy_ticket git:(master) ✗ python   buyTicket.py
-Hi, username: 729173164@qq.com
+Hi, username: ***********
 Password: ******************
 Buy bus ticket system
 Will use student number 2017E8018661119 to buy a bus ticket.
@@ -41,13 +41,13 @@ Login success
 [2]:2017-09-29 Friday
 [3]:2017-09-30 Saturday
 [4]:2017-10-01 Sunday
-hello 王晓满,please choose  the sequence number of the time to take the bus (1-4):
+hello **********,please choose  the sequence number of the time to take the bus (1-4):
 ```
 
 选择你要坐车的时间前面的序号，也就是1-4。
 
 ```bash
-hello 王晓满,please choose  the sequence number of the time to take the bus (1-4):3
+hello ******,please choose  the sequence number of the time to take the bus (1-4):3
 [1]:雁栖湖—玉泉路7:20（周末）
 [2]:雁栖湖—奥运村7:20（周末）
 [3]:雁栖湖—玉泉路13:00（周末）
@@ -56,7 +56,7 @@ hello 王晓满,please choose  the sequence number of the time to take the bus (
 [6]:玉泉路—雁栖湖10:00（周末）
 [7]:玉泉路—雁栖湖15:00（周末）
 [8]:奥运村—雁栖湖15:50（周末）
-hello 王晓满,please choose  the sequence number of the route to take the bus (1-8):
+hello ************,please choose  the sequence number of the route to take the bus (1-8):
 ```
 
 跟上面一样，输入你要乘坐的路线前面的序号。
