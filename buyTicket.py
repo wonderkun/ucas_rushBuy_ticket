@@ -192,7 +192,7 @@ class BuyTicket():
                 if debug:
                     print(busRouteData["returncode"])
 
-                if busRouteData["returncode"] != "SUCCESS":
+                if  not busRouteData.has_key("returncode") or busRouteData["returncode"] != "SUCCESS":
                     continue
                 i = 1
                 for route in busRouteData["routelist"]:
