@@ -61,7 +61,9 @@ class BuyTicket(threading.Thread):
         self.studentName = ""
         self.timeout = 8
         self.autoRecognize = int(autoRecognize)
-        
+        if self.autoRecognize:
+            from autoCaptcha import recognize
+            self.recognize = recognize.Recognize(self.captchaFile)
 
 
         print('Hi, username: ' + self.username)
@@ -137,8 +139,6 @@ class BuyTicket(threading.Thread):
                 if len(self.code)!=4:
                     self.__systemExit("[*] The captcha is error!")
             else:
-                from autoCaptcha import recognize
-                self.recognize = recognize.Recognize(self.captchaFile)
                 self.code = self.recognize.crack_captcha()
         return True
         
