@@ -2,4 +2,4 @@
 *.png
 .vscode
 config
-tmp/*.jpg
+tmp/*

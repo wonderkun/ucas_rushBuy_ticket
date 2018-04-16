@@ -1,6 +1,5 @@
 [logininfo]
-username = 729173164@qq.com
-password = iie@wonderkun123
-phoneNum = 17600295413
-autoRecognize = 1 
-# autoRecognize 为1 表示开启自动验证码识别，为0表示不开启自动验证码识别
+username = 你的用户名
+password = 你的密码
+phoneNum = 你的电话号码
+autoRecognize = 0 
