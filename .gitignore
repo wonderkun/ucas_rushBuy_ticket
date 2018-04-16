@@ -2,4 +2,3 @@
 *.png
 .vscode
 config
-tmp/*
