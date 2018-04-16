@@ -48,7 +48,7 @@ class BuyTicket(threading.Thread):
             return __retry
         return _retry               
 
-    def __init__(self,username,password,telNum):
+    def __init__(self,username,password,telNum,autoRecognize=False):
         threading.Thread.__init__(self)
         self.username = username
         self.password = password
@@ -60,6 +60,9 @@ class BuyTicket(threading.Thread):
         self.studentNum = ""
         self.studentName = ""
         self.timeout = 8
+        self.autoRecognize = int(autoRecognize)
+        
+
 
         print('Hi, username: ' + self.username)
         print('Password: ' + '*' * len(self.password))
@@ -129,9 +132,14 @@ class BuyTicket(threading.Thread):
    
     def __waitForCap(self):
         if getattr(self,"captcha",None) is not None:
-            self.code = str(input("[*] Please input the captcha. The captcha picture is  %s:"%(self.captchaFile)))
-            if len(self.code)!=4:
-                self.__systemExit("[*] The captcha is error!")
+            if not self.autoRecognize:
+                self.code = str(input("[*] Please input the captcha. The captcha picture is in ./%s:"%(self.captchaFile)))
+                if len(self.code)!=4:
+                    self.__systemExit("[*] The captcha is error!")
+            else:
+                from autoCaptcha import recognize
+                self.recognize = recognize.Recognize(self.captchaFile)
+                self.code = self.recognize.crack_captcha()
         return True
         
     @requestRetry(10,True)
@@ -465,8 +473,9 @@ if __name__ == '__main__':
     cf.read("config")
     username = cf.get("logininfo","username")
     password = cf.get("logininfo","password")
-    phonenum = cf.get("logininfo","phonenum")
-    buyTicket = BuyTicket(username=username,password=password,telNum=phonenum)
+    phonenum = cf.get("logininfo","phoneNum")
+    autoRecognize = cf.get("logininfo","autoRecognize")
+    buyTicket = BuyTicket(username=username,password=password,telNum=phonenum,autoRecognize=autoRecognize)
     buyTicket.setDaemon(True)
     buyTicket.start()
     while buyTicket.is_alive():
