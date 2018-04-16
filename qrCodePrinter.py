@@ -5,7 +5,6 @@
 import platform 
 import qrcode 
 
-
 class QRCodePrinter():
     def __init__(self,codeStr,fileName):
         self.codeStr = codeStr
@@ -14,8 +13,8 @@ class QRCodePrinter():
         # 保存生成二维码的字符串  
         self.platform = self.__getSystemType()
         if "Windows" in self.platform:
-            self.white = "▇".decode("utf8")
-            self.black = "　".decode("utf8")
+            self.white = "▇"
+            self.black = "　"
         elif "Linux" in self.platform:
             self.black = "\033[40m  \033[0m"
             self.white = "\033[47m  \033[0m"

@@ -204,8 +204,6 @@ class BuyTicket(threading.Thread):
             return True
         return False
 
-
-
     @requestRetry(4,True)
     def __getPayProjectId(self):
         response = self.s.get(self.getPayProjectId,headers=self.headers,timeout=self.timeout)
@@ -230,7 +228,7 @@ class BuyTicket(threading.Thread):
         for i in self.takeBusDay:
             print("[{i}]:{takeBusDay}".format(i=i,takeBusDay=self.takeBusDay[i]))
         if "Windows" in self.platform:
-            strHint = ("hello {},please choose  the sequence number of the time to take the bus (1-4):".format(self.studentName.decode("utf8").encode("gbk")))
+            strHint = ("hello {},please choose  the sequence number of the time to take the bus (1-4):".format(self.studentName))
         else:  
             strHint = ("hello {},please choose  the sequence number of the time to take the bus (1-4):".format(self.studentName))
         try:
@@ -240,9 +238,11 @@ class BuyTicket(threading.Thread):
         if num > 4 or num < 1:
             print("[*] The num must between 1-4!")
             return False
-        
+
         print("[*] %s run Success."%(sys._getframe().f_code.co_name))
         self.bookingdate = self.takeBusDay[str(num)].split(" ")[0]
+        if not self.bookingdate:
+            return False
         return True
 
     @requestRetry(50,True)
@@ -264,17 +264,17 @@ class BuyTicket(threading.Thread):
         print("[*] %s run Success."%(sys._getframe().f_code.co_name))
         return True
         
-    @requestRetry(50,True)
+    @requestRetry(5,True)
     def __getRouteCode(self):
         self.routeCode = None        
         for i in self.routeContent:
             if "Windows" in self.platform:
-                print("[{i}]:{routeContent}".format(i=i,routeContent=self.routeContent[i][1].decode("utf8").encode("gbk")))
+                print("[{i}]:{routeContent}".format(i=i,routeContent=self.routeContent[i][1]))
             else:
                 print("[{i}]:{routeContent}".format(i=i,routeContent=self.routeContent[i][1]))
 
         if "Windows" in self.platform:
-            strHint = ("hello {},please choose  the sequence number of the route to take the bus (1-{}):".format(self.studentName.decode("utf8").encode("gbk"),i))
+            strHint = ("hello {},please choose  the sequence number of the route to take the bus (1-{}):".format(self.studentName,i))
         else:
             strHint = ("hello {},please choose  the sequence number of the route to take the bus (1-{}):".format(self.studentName,i))
         try:
@@ -416,7 +416,7 @@ class BuyTicket(threading.Thread):
         self.payStr =  unquote(redirectUrl.split("&")[2].split("=")[1])
         # print self.payStr
         if "Windows" in self.platform:
-            print("\n\n购票信息:\n用户名:{}\n学号:{}\n乘车日期:{}\n乘车路线:{}\n电话号码:{}\n如果以上信息无误,请扫下面的二维码进行支付，支付前务必核对购票信息".encode('gbk').format(self.username,self.studentNum,self.bookingdate,self.routeName.encode("gbk"),self.telNum))
+            print("\n\n购票信息:\n用户名:{}\n学号:{}\n乘车日期:{}\n乘车路线:{}\n电话号码:{}\n如果以上信息无误,请扫下面的二维码进行支付，支付前务必核对购票信息".format(self.username,self.studentNum,self.bookingdate,self.routeName,self.telNum))
         else:
             print("\n\n购票信息:\n用户名:{}\n学号:{}\n乘车日期:{}\n乘车路线:{}\n电话号码:{}\n如果以上信息无误,请扫下面的二维码进行支付，支付前务必核对购票信息。".format(self.username,self.studentNum,self.bookingdate,self.routeName,self.telNum))
         print("[*] %s run Success."%(sys._getframe().f_code.co_name))
@@ -439,15 +439,22 @@ class BuyTicket(threading.Thread):
             return
         print("[*] Login into system success!")
         
-        self.__getPayProjectId()
-        # return 
-        self.__getBusRouteData()
-        self.__getBusRouteContent()
-        self.__getRouteCode()
-        self.__getRemainingSeats()
-        self.__getReservedBusInfo()
-        self.__seletePayType()
-        self.__goPay()
+        if not self.__getPayProjectId():
+            return
+        if not self.__getBusRouteData():
+            return 
+        if not self.__getBusRouteContent():
+            return
+        if not self.__getRouteCode():
+            return
+        if not self.__getRemainingSeats():
+            return
+        if not self.__getReservedBusInfo():
+            return 
+        if not self.__seletePayType():
+            return 
+        if not self.__goPay():
+            return
         qr = QRCodePrinter(self.payStr,fileName=self.payFile)
         qr.printQR()
         # print("\nBuy ticket success!")
@@ -460,7 +467,11 @@ if __name__ == '__main__':
     password = cf.get("logininfo","password")
     phonenum = cf.get("logininfo","phonenum")
     buyTicket = BuyTicket(username=username,password=password,telNum=phonenum)
+    buyTicket.setDaemon(True)
     buyTicket.start()
+    while buyTicket.is_alive():
+        time.sleep(1)
+        
 
 
 
