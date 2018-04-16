@@ -7,9 +7,10 @@ import qrcode
 
 
 class QRCodePrinter():
-    def __init__(self,codeStr):
+    def __init__(self,codeStr,fileName):
         self.codeStr = codeStr
         self.codeArray = [] 
+        self.fileName = fileName
         # 保存生成二维码的字符串  
         self.platform = self.__getSystemType()
         if "Windows" in self.platform:
@@ -38,7 +39,7 @@ class QRCodePrinter():
         qrSave.add_data(self.codeStr)
         qrSave.make(fit=True)
         imgSave = qrSave.make_image()
-        imgSave.save("buy.png")
+        imgSave.save(self.fileName)
 
         ## print QR code 
         qrPrite = qrcode.QRCode(

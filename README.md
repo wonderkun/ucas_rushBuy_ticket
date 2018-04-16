@@ -2,7 +2,15 @@
 
 快速qiangpiao程序
 
-**目前仅支持python2，仅支持微信支付，使用之前请详细阅读README.md**
+
+
+## 修改 
+
+1. 添加了验证码部分，在学校外网的时候，也可以通过手工输入验证码的方式进行买票
+2. 修改了代码的结构，在网络比较差的时候，也可以运行
+3. 目前仅支持python3 
+
+**目前仅支持python3，仅支持微信支付，使用之前请详细阅读README.md**
 
 ## 使用步骤
 
@@ -24,6 +32,7 @@ pip install --upgrade requests
 [logininfo]
 username = 学校统一验证平台的邮箱
 password = 你的密码
+phonenum = 你的电话号码
 ```
 
 #### 运行
@@ -72,6 +81,7 @@ hello ************,please choose  the sequence number of the route to take the b
 #### 效果演示
 
 [![asciicast](https://asciinema.org/a/JXPq3VXSuSnbr04DJRM04BNuX.png)](https://asciinema.org/a/JXPq3VXSuSnbr04DJRM04BNuX)
+
 
 
 
