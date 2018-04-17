@@ -59,7 +59,7 @@ class BuyTicket(threading.Thread):
         self.code = None
         self.studentNum = ""
         self.studentName = ""
-        self.timeout = 8
+        self.timeout = 60
         self.autoRecognize = int(autoRecognize)
         if self.autoRecognize:
             from autoCaptcha import recognize
